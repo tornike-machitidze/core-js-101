@@ -76,4 +76,5 @@ $ npm run lint -- --fix
 ``` 
 
 ___
-The task based on https://github.com/rolling-scopes-school/js-assignments.
+The task based on https://github.com/tornike-machitidze/core-js-101.
+
