@@ -1,3 +1,4 @@
+/* eslint-disable */
 /* *******************************************************************************************
  *                                                                                           *
  * Plese read the following tutorial before implementing tasks:                              *
@@ -51,8 +52,9 @@ function getCicleCircumference(radius) {
  *  10, 0  => 5
  *  -3, 3  => 0
  */
-function getAverage(value1, value2) {
-  return (value1 + value2) / 2;
+function getAverage(/* value1, value2 */) {
+  throw new Error('Not implemented');
+  // return (value1 + value2) / 2;
 }
 
 /**
@@ -70,8 +72,9 @@ function getAverage(value1, value2) {
  *   (0,0) (1,0)    => 1
  *   (-5,0) (10,-10) => 18.027756377319946
  */
-function getDistanceBetweenPoints(x1, y1, x2, y2) {
-  return Math.floor((x2 - x1) ** 2 + (y2 - y1) ** 2);
+function getDistanceBetweenPoints(/* x1, y1, x2, y2 */) {
+  throw new Error('Not implemented');
+  // return Math.floor((x2 - x1) ** 2 + (y2 - y1) ** 2);
 }
 
 /**
@@ -203,7 +206,7 @@ function roundToPowerOfTen(/* num, pow */) {
 function isPrime(n) {
   if (n === 2) { return true; }
   if (n < 2 || !(n % 2)) { return false; }
-  for (let i = 3; i <= Math.sqrt(n); i++) {
+  for (let i = 3; i <= Math.sqrt(n); i += 1) {
     if (n % i === 0) {
       return false;
     }
@@ -226,8 +229,9 @@ function isPrime(n) {
  *   toNumber(42, 0) => 42
  *   toNumber(new Number(42), 0) => 42
  */
-function toNumber(value, def) {
-  return Number.isNaN(Number(value)) ? def : value;
+function toNumber(/* value, def */) {
+  throw new Error('Not implemented');
+  // return Number.isNaN(Number(value)) ? def : value;
 }
 
 module.exports = {
