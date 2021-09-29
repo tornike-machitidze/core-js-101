@@ -41,9 +41,8 @@ Rectangle.prototype.getArea = function(){
  *    [1,2,3]   =>  '[1,2,3]'
  *    { width: 10, height : 20 } => '{"height":10,"width":20}'
  */
-function getJSON(/* obj */) {
-  throw new Error('Not implemented');
-  // return JSON.parse(obj);
+function getJSON(obj) {
+  return JSON.stringify(obj);
 }
 
 
@@ -58,8 +57,9 @@ function getJSON(/* obj */) {
  *    const r = fromJSON(Circle.prototype, '{"radius":10}');
  *
  */
-function fromJSON(/* proto, json */) {
-  throw new Error('Not implemented');
+function fromJSON(proto, json) {
+  const obj = JSON.parse(json);
+  return new proto.constructor(...Object.values(obj));
 }
 
 
@@ -117,33 +117,119 @@ function fromJSON(/* proto, json */) {
  *  For more examples see unit tests.
  */
 
+ const orderError = 'Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element';
+ const noDubs = 'Element, id and pseudo-element should not occur more then one time inside the selector';
+
+ const types = {
+   ELEMENT: 1,
+   ID: 2,
+   CLASS: 3,
+   ATTR: 4,
+   PSEUDO_CLASS: 5,
+   PSEUDO_ELEMENT: 6,
+ };
+
+ class Builder {
+   constructor() {
+     this.lastType = 0;
+     this.result = '';
+   }
+
+   setType(type) {
+     switch (type) {
+       case types.ELEMENT:
+       case types.ID:
+       case types.PSEUDO_ELEMENT: {
+         if (type === this.lastType) {
+           throw new Error(noDubs);
+         }
+         break;
+       }
+       default:
+     }
+
+     if (type < this.lastType) throw new Error(orderError);
+
+     this.lastType = type;
+   }
+
+   element(value) {
+     this.setType(types.ELEMENT);
+     this.result += `${value}`;
+     return this;
+   }
+
+   id(value) {
+     this.setType(types.ID);
+     this.result += `#${value}`;
+     return this;
+   }
+
+   class(value) {
+     this.setType(types.CLASS);
+     this.result += `.${value}`;
+     return this;
+   }
+
+   attr(value) {
+     this.setType(types.ATTR);
+     this.result += `[${value}]`;
+     return this;
+   }
+
+   pseudoClass(value) {
+     this.setType(types.PSEUDO_CLASS);
+     this.result += `:${value}`;
+     return this;
+   }
+
+   pseudoElement(value) {
+     this.setType(types.PSEUDO_ELEMENT);
+     this.result += `::${value}`;
+     return this;
+   }
+
+   stringify() {
+     return this.result;
+   }
+ }
+
 const cssSelectorBuilder = {
-  element(/* value */) {
-    throw new Error('Not implemented');
+  element(value) {
+    return new Builder().element(value);
   },
 
-  id(/* value */) {
-    throw new Error('Not implemented');
+  id(value) {
+    return new Builder().id(value);
   },
 
-  class(/* value */) {
-    throw new Error('Not implemented');
+  class(value) {
+    return new Builder().class(value);
   },
 
-  attr(/* value */) {
-    throw new Error('Not implemented');
+  attr(value) {
+    return new Builder().attr(value);
   },
 
-  pseudoClass(/* value */) {
-    throw new Error('Not implemented');
+  pseudoClass(value) {
+    return new Builder().pseudoClass(value);
   },
 
-  pseudoElement(/* value */) {
-    throw new Error('Not implemented');
+  pseudoElement(value) {
+    return new Builder().pseudoElement(value);
   },
 
-  combine(/* selector1, combinator, selector2 */) {
-    throw new Error('Not implemented');
+  combine(selector1, combinator, selector2) {
+    const a = selector1.stringify();
+    const b = selector2.stringify();
+
+    const result = {
+      stringify() {
+        return `${a} ${combinator} ${b}`;
+      },
+    };
+
+    return result;
   },
 };
 
