@@ -43,6 +43,7 @@ Rectangle.prototype.getArea = function(){
  */
 function getJSON(/* obj */) {
   throw new Error('Not implemented');
+  // return JSON.parse(obj);
 }
 
 
